@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Tutorial 1</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/> 
+
+    <style>
+        /* body {
+            margin: 0;
+            padding: 0;
+        } */
+        #map {width: 100%;
+                height: 95vh;
+            }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+//var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([44.60868, -79.42068], 15);
+
+var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+})
+osm.addTo(map);
+
+// Other map tile offerings:
+
+//var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+	//attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	//subdomains: 'abcd',
+	//maxZoom: 20
+//});
+
+//CartoDB_Voyager.addTo(map)
+
+//googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',{
+    //maxZoom: 20,
+    //subdomains:['mt0','mt1','mt2','mt3']
+//});
+
+//googleStreets.addTo(map)
+
+
+//Centre of Orillia
+L.marker([44.60868, -79.42068]).addTo(map);
+
+var marker = L.marker([44.60868, -79.42068]).addTo(map);
+// Bind a popup to the marker
+        marker.bindPopup("<b>Hello GHTA!</b><br>This is the centre of Orillia.")
+              //.openPopup(); // Optional: open immediately
+
+
+// Popup Marker 87 Lightfoot Dr, Orillia, ON:
+    //L.marker([44.613942, -79.414901]).addTo(map);
+
+var marker = L.marker([44.613942, -79.414901]).addTo(map);
+// Bind a popup to the marker
+        marker.bindPopup("<b>Hello!</b><br>This is our home, 87 Lightfoot Dr.")
+              //.openPopup(); // Optional: open immediately
+
+
+ // Click anywhere on the map to get a decimal degrees popup! :)           
+ var popup = L.popup();
+
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+}
+
+map.on('click', onMapClick);   
+
+
+// Geolocation (sort of...)
+map.locate({setView: true, maxZoom: 14});
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
+map.on('locationfound', onLocationFound);
+
+// If Geolocation failed, then let me know:
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+map.on('locationerror', onLocationError);
+
+
+// More Marker Fun!
+
+var marker = L.marker([44.611831, -79.384076]).addTo(map);
+    marker.bindPopup("<b>Gordon Lightfoot</b><br>A statue honouring his legacy of his most famous songs.")
+    //.openPopup(); //Optional
+    
+// Here's how to make a red circle with a specific radius and other attributes plus a popup bubble!    
+//var circle = L.circle([44.611831, -79.384076], {
+    //color: 'red',
+    //fillColor: '#f03',
+    //fillOpacity: 0.5,
+    //radius: 100
+//}).addTo(map);
+// Add this to create a popup for the 
+//circle.bindPopup("I am a red circle :).");
+
+// create ORILLIA MAIN TRAIL in an orange polyline from an array of LatLng points
+var latlngs = [
+    // Orillia Start - where Wilderness ends and Orillia begins. 
+    [44.7565470,-79.1551339],
+    [44.753158,-79.167409],
+    [44.7526647,-79.1683661],
+    [44.752134,-79.168876],
+    [44.751444,-79.168898],
+    [44.7366840,-79.1608573],
+    [44.7360304,-79.1607346],
+    [44.7353678,-79.1612486],
+    [44.733164,-79.168417],
+    [44.732762,-79.168878],
+    [44.732293,-79.169108],
+    [44.731711,-79.169122],
+    [44.728619,-79.167517],
+    [44.7279058,-79.1674854],
+    // Sadowa Road & Dwinelle Lane
+    [44.7277629,-79.1675392],
+    [44.7275081,-79.1676324],
+    [44.7271867,-79.1679114],
+    [44.7253110,-79.1707668],
+    [44.7246914,-79.1721709],
+    [44.7238639,-79.1743613],
+    [44.7237366,-79.1744930],
+    [44.7234446,-79.1745089],
+    // Kirkfield Rd & Wrights Rd
+    [44.687871, -79.158019],
+    // Kirkfield Rd & Con 13
+    [44.669016,-79.149930],
+
+
+    [44.661115, -79.186257],
+    // Con 13 goes SW then SE
+    [44.660935, -79.186364],
+    [44.658404, -79.198661],
+    // Orillia Main Trail heads SW into Rathburn Forest Tract
+    [44.6569971,-79.2046685],
+    [44.656614, -79.204668],
+    [44.656397, -79.204807],
+    [44.656222, -79.204754],
+    [44.656104, -79.204614],
+    [44.65557, -79.204426],
+    [44.655089, -79.204469],
+    [44.65489, -79.204657],
+    [44.654421, -79.204855],
+    [44.654192, -79.205113],
+    [44.653391, -79.205806],
+    [44.653242, -79.205763],
+    [44.65296, -79.205344],
+    [44.652818, -79.205322],
+    [44.652643, -79.205268],
+    [44.652525, -79.205354],
+    [44.652303, -79.205708],
+    [44.652067, -79.205858],
+    [44.652002, -79.205853],
+    [44.651838, -79.205966],
+    [44.651632, -79.206261],
+    [44.651342, -79.206437],
+    [44.651251, -79.206523],
+    [44.650899, -79.206707],
+    [44.650838, -79.206868],
+    [44.649602, -79.207951],
+    [44.649537, -79.208123],
+    [44.648926, -79.208605],
+    [44.6483, -79.209335],
+    [44.647636, -79.209693],
+    
+
+
+
+
+    [44.647033, -79.210667],
+    // Trail crosses 1st River
+    [44.646554, -79.211103],
+    [44.645331, -79.212296],
+    [44.644701, -79.213241],
+    [44.644346, -79.213412],
+    [44.64414, -79.213841],
+    [44.643896, -79.214056],
+    [44.643682, -79.214548],
+    [44.643415, -79.214988],
+    // Trail crosses 2nd River
+    [44.643002, -79.215455],
+    [44.642586, -79.215558],
+
+    // Hwy 169 & Con 12
+    [44.6417957,-79.2192005],
+    // Con 12 & Fairvalley Rd
+    [44.628752, -79.276791],
+    // Con 11 & Fairvalley Rd
+    [44.616838, -79.271734],
+
+
+    //Trail junction NW corner of Hwy 12 & Con 11
+    [44.599479, -79.35084],
+
+//];
+
+//var polyline = L.polyline(latlngs, {color: 'orange', weight: 5}).addTo(map);
+   
+
+//Will 2 polylines work? Let's test it out...
+    //var latlngs = [
+
+
+    //Apex of Tudhope Park at Gordon Lightfoot statue.
+    [44.611593, -79.384226],
+
+    //Millenial Trail - NW Corner of Atherly Rd & Forest Av N
+    [44.6058860,-79.3972782],
+    [44.6060188,-79.3972925],
+    [44.6065058,-79.3977397],
+    [44.6068109,-79.3979661],
+    [44.6069158,-79.3991795],
+    [44.6069957,-79.4020371],
+    [44.6072183,-79.4055035],
+    [44.6072889,-79.4056390],
+    [44.607416, -79.406579],
+    [44.6076329,-79.4074005],
+    //Millenial Trail & Cedar Island Rd
+    [44.6081163,-79.4086171],
+
+   
+
+];
+
+var polyline = L.polyline(latlngs, {color: 'orange', weight: 6}).addTo(map);
+
+// zoom the map to the polyline
+map.fitBounds(polyline.getBounds());
+
+</script>
