@@ -31,6 +31,16 @@ var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 })
 osm.addTo(map);
 
+	// Add Scalebar
+// Add a scale bar to the map
+L.control.scale({
+position: 'bottomleft', // Position of the scale bar
+maxWidth: 100, // Maximum width of the scale bar in pixels
+metric: true, // Show metric units (m/km)
+imperial: true, // Show imperial units (ft/mi)
+updateWhenIdle: false // Update the scale bar on move
+}).addTo(map);
+
 // Other map tile offerings:
 
 //var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
